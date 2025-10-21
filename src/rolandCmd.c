@@ -283,14 +283,18 @@ void power(char **args, int size){
 }
 
 void err(char **args, int size){
-	int error = atoi(args[0]);
+	if(devMode == 1){
+		int error = atoi(args[0]);
 
-	if(countArgs(args) > 1){
-		ThrowError(INVALID_SYNTAX, "");
-	} else if(countArgs(args) == 0){
-		ThrowError(CUSTOM_ERR, "err");
+		if(countArgs(args) > 1){
+			ThrowError(INVALID_SYNTAX, "");
+		} else if(countArgs(args) == 0){
+			ThrowError(CUSTOM_ERR, "err");
+		} else{
+			ThrowError(error, "");
+		}
 	} else{
-		ThrowError(error, "");
+		ThrowError(DEV_MODE_REQUIRED, "");
 	}
 }
 
