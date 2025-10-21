@@ -55,8 +55,6 @@ exit- Exits command line
 	}
 #endif
 
-
-
 int devMode = 0;
 
 //Binds command names to their respective function
@@ -83,26 +81,75 @@ int countArgs(char **args){
 }
 
 
-/*
-ERROR CODES
-	
-	-100 Errors: Invalids
-		INVALID ARGUMENT- -101
-		INVALID COMMAND- -102
+typedef enum ErrorCode{
+	INVALID_ARGUMENT = 101,
+	INVALID_COMMAND = 102,
+	INVALID_SYNTAX = 103,
+	DIVIDE_BY_ZERO = 201,
+	TYPE_MISMATCH = 301,
+	ARRAY_OUT_OF_BOUNDS = 401,
+	DEV_MODE_REQUIRED = 621,
+	CUSTOM_ERR = 1023,
 
-	-200 Errors: Arithmatic Errors
-
-	-300 Errors: Type Errors
-
-	-400 Errors: Array Errors
-
-	-500 Errors: Other
-
-
-*/
-void ThrowError(int errorCode){
-	//coming soon
-
+} ErrorCode;
+void ThrowError(ErrorCode err, char *CustomErrMsg){
+	int customMsg = 0;
+	if(strlen(CustomErrMsg) > 0){
+		customMsg = 1;
+	}
+	switch(err){
+	case INVALID_ARGUMENT:
+		printf("ERROR: Invalid Argument\n");
+		if(customMsg){
+			printf("Additional info:\n\t%s\n", CustomErrMsg);
+		}
+		break;
+	case INVALID_COMMAND:
+		printf("ERROR: Invalid Command\n");
+		if(customMsg){
+			printf("Additional info:\n\t%s\n", CustomErrMsg);
+		}
+		break;
+	case INVALID_SYNTAX:
+		printf("ERROR: Invalid Command Syntax\n");
+		if(customMsg){
+			printf("Additional info:\n\t%s\n", CustomErrMsg);
+		}
+		break;
+	case DIVIDE_BY_ZERO:
+		printf("ERROR: Cannot divide by zero\n");
+		if(customMsg){
+			printf("Additional info:\n\t%s\n", CustomErrMsg);
+		}
+		break;
+	case TYPE_MISMATCH:
+		printf("ERROR: Type mismatch\n");
+		if(customMsg){
+			printf("Additional info:\n\t%s\n", CustomErrMsg);
+		}
+		break;
+	case ARRAY_OUT_OF_BOUNDS:
+		printf("ERROR: Array out of Bounds\n");
+		if(customMsg){
+			printf("Additional info:\n\t%s\n", CustomErrMsg);
+		}
+		break;
+	case DEV_MODE_REQUIRED:
+		printf("ERROR: Developer mode not enabled, please enable developer mode\n");
+		if(customMsg){
+			printf("Additional info:\n\t%s\n", CustomErrMsg);
+		}
+		break;
+	case CUSTOM_ERR:
+		if(customMsg){
+			printf("ERROR: %s\n", CustomErrMsg);
+		} else{
+			ThrowError(CUSTOM_ERR, "CUSTOM ERROR HANDLER MISSING ERROR MESSAGE\n");
+		}
+		break;
+	default:
+		printf("ERROR: THROWN ERROR NOT FOUND\n");
+	}
 }
 
 
@@ -156,7 +203,7 @@ void help(char **args, int size){
 			printf("%s\n", helpPages[i]);
 		} 
 	} else{
-			printf("Invalid Command Syntax");
+			ThrowError(INVALID_SYNTAX, "");
 		}
 }
 
@@ -180,7 +227,7 @@ void subtract(char **args, int size){
 	if(count == 2){
 		printf("%d\n", difference);
 	} else{
-		printf("Invalid Command Syntax!\n");
+		ThrowError(INVALID_SYNTAX, "");
 	}
 }
 
@@ -189,7 +236,7 @@ void square(char **args, int size){
 		int square = atoi(args[0]) * atoi(args[0]);
 		printf("%d\n", square);
 	} else{
-		printf("Invalid Command Syntax!\n");
+		ThrowError(INVALID_SYNTAX, "");
 	}
 }
 
@@ -198,7 +245,7 @@ void cube(char **args, int size){
 		int square = atoi(args[0]) * atoi(args[0]) * atoi(args[0]);
 		printf("%d\n", square);
 	} else{
-		printf("Invalid Command Syntax!\n");
+		ThrowError(INVALID_SYNTAX, "");
 	}
 }
 
@@ -209,11 +256,11 @@ void cmdexit(char **args, int size){
 }
 
 void clearConsole(char **args, int size){
-	printf("Test");
+	//printf("Test");
 	if(countArgs(args) <= 0){
 		clearTerminal();
 	} else{
-		printf("Invalid Command Syntax!\n");
+		ThrowError(INVALID_SYNTAX, "");
 	}
 }
 
@@ -231,11 +278,21 @@ void power(char **args, int size){
 		}
 		printf("%d\n", result);
 	} else{
-		printf("Invalid Command Syntax!\n");
+		ThrowError(INVALID_SYNTAX, "");
 	}
 }
 
-void err(char **args, int size){}
+void err(char **args, int size){
+	int error = atoi(args[0]);
+
+	if(countArgs(args) > 1){
+		ThrowError(INVALID_SYNTAX, "");
+	} else if(countArgs(args) == 0){
+		ThrowError(CUSTOM_ERR, "err");
+	} else{
+		ThrowError(error, "");
+	}
+}
 
 //char *commandNames[10] = {"help", "add", "subtract", "square", "exit", "clear", "cube", "pow", "err", "Terminator"};   Legacy Version 1 code
 //void (*commandFuncs[10])(char **, int) = {help, sum, subtract, square, cmdexit, clearConsole, cube, power, err, arrayTerminator};
