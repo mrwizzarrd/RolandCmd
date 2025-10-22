@@ -67,6 +67,11 @@ typedef struct Command{
 //=============================================================================
 //  Utility Functions
 //=============================================================================
+void clearInputBuffer(){
+	int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
 
 void clearTerminal(void){
 	printf("\e[1;1H\e[2J");
@@ -85,9 +90,11 @@ typedef enum ErrorCode{
 	INVALID_ARGUMENT = 101,
 	INVALID_COMMAND = 102,
 	INVALID_SYNTAX = 103,
+	INVALID_CREDENTIALS = 104,
 	DIVIDE_BY_ZERO = 201,
 	TYPE_MISMATCH = 301,
-	ARRAY_OUT_OF_BOUNDS = 401,
+	USER_NOT_FOUND = 401,
+	ARRAY_OUT_OF_BOUNDS = 501,
 	DEV_MODE_REQUIRED = 621,
 	CUSTOM_ERR = 1023,
 
@@ -112,6 +119,12 @@ void ThrowError(ErrorCode err, char *CustomErrMsg){
 		break;
 	case INVALID_SYNTAX:
 		printf("ERROR: Invalid Command Syntax\n");
+		if(customMsg){
+			printf("Additional info:\n\t%s\n", CustomErrMsg);
+		}
+		break;
+	case INVALID_CREDENTIALS:
+		printf("ERROR: INVALID LOGIN CREDENTIALS\n");
 		if(customMsg){
 			printf("Additional info:\n\t%s\n", CustomErrMsg);
 		}
@@ -152,7 +165,52 @@ void ThrowError(ErrorCode err, char *CustomErrMsg){
 	}
 }
 
+//=============================================================================
+//  USER HANDLING
+//=============================================================================
 
+typedef struct user{
+	char username[10];
+	char password[20];
+	int Dev;
+	int admin;
+} user;
+
+user Users[3] = {
+	{"loggedOut", "", 0, 0},
+	{"rverm", "testPassword", 1, 1},
+	{"eli", "test123", 0, 1}
+};
+
+user CurrentUser = {"loggedOut", "", 0, 0};
+
+int userNum = 2;
+
+int login(){
+	printf("USERNAME: ");
+	char username[15];
+	scanf("%s", username);
+	clearInputBuffer();
+	for(int i = 0; i < userNum; i++){
+		if(strcmp(username, Users[i].username) == 0){
+			char password[20];
+			printf("Enter password for user %s: ", username);
+			scanf("%s", password);
+			clearInputBuffer();
+			if(strcmp(password, Users[i].password) == 0){
+				strcpy(CurrentUser.username, Users[i].username);
+				strcpy(CurrentUser.password, Users[i].password);
+				CurrentUser.Dev = Users[i].Dev;
+				return 0;
+			} else{
+				ThrowError(INVALID_CREDENTIALS, "");
+				return -1;
+			}
+		}
+	}
+	ThrowError(USER_NOT_FOUND, "");
+	return -1;
+}
 
 //=============================================================================
 //  Command Implementations
@@ -298,10 +356,26 @@ void err(char **args, int size){
 	}
 }
 
+void enableDev(char **args, int size){
+	if(countArgs(args) > 0){
+		ThrowError(INVALID_SYNTAX, "");
+	} else{
+		int loginSuccess = login();
+		if(loginSuccess == 0){
+			if(CurrentUser.Dev == 1){
+				devMode = 1;
+			} else{
+				ThrowError(CUSTOM_ERR, "USER NOT A DEVELOPER");
+			}
+		}
+	}
+}
+
 //char *commandNames[10] = {"help", "add", "subtract", "square", "exit", "clear", "cube", "pow", "err", "Terminator"};   Legacy Version 1 code
 //void (*commandFuncs[10])(char **, int) = {help, sum, subtract, square, cmdexit, clearConsole, cube, power, err, arrayTerminator};
 
-Command commands[9] = {
+
+Command commands[10] = {
 	{"help", help, 0},
 	{"add", sum, 0},
 	{"subtract", subtract, 0},
@@ -310,6 +384,7 @@ Command commands[9] = {
 	{"clear", clearConsole, 0},
 	{"cube", cube, 0},
 	{"pow", power, 0},
+	{"devmode", enableDev, 0},
 	{"err", err, 1},
 };
 
@@ -331,12 +406,12 @@ int compareCommand(char *cmd){
 }
 
 int getCmdIndex(char *cmd){
-	int index = 0;
-
-	while(strcmp(commands[index].name, cmd) != 0){
-        index++;
+	for(int i = 0; i < numOfCmds; i++){
+		if(strcmp(commands[i].name, cmd) == 0){
+			return i;
+		}
 	}
-	return index;
+	return -1;
 }
 
 void parseCommand(char *command, int *commandIndex, char **args){
@@ -353,16 +428,21 @@ void parseCommand(char *command, int *commandIndex, char **args){
 
 	//printf("%s\n", commandParsed[0]);
 
+	int arg_i = 0;
 	for (int j = 1; commandParsed[j] != NULL; j++) {
-        args[j - 1] = commandParsed[j];
-    }
+	    args[arg_i++] = commandParsed[j];
+	}
+	args[arg_i] = NULL;
 
-    args[index - 1] = NULL;
+	if (commandParsed[0] == NULL) {
+	    *commandIndex = -1;
+	    return;
+	}
 
 	if(compareCommand(commandParsed[0]) != 1){
-		printf("Invalid Command! For Help Input 'help'\n");
-		*commandIndex = getCmdIndex("err");
-	} else{
+		ThrowError(INVALID_COMMAND, "");
+		*commandIndex = -1;	
+	} 	else{
 		*commandIndex = getCmdIndex(commandParsed[0]);
 	}
 
@@ -376,7 +456,7 @@ int main(void){
 	command[0] = '\0';
 
 	while(1){
-		int commandIndex;
+		int commandIndex = -1;
 		char *args[19];
 		printf(">");
 		fgets(command, sizeof(command), stdin);
@@ -393,7 +473,9 @@ int main(void){
     		argCount++;
 		}
 
-		commands[commandIndex].func(args, argCount);
+		if (commandIndex >= 0 && commandIndex < numOfCmds) {
+    		commands[commandIndex].func(args, argCount);
+		}
 
 		if(strcmp(command, "exit") == 0){
 			return 0;
