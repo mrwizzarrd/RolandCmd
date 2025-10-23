@@ -55,28 +55,45 @@ exit- Exits command line
 	}
 #endif
 
-int devMode = 0;
-
-//Binds command names to their respective function
-typedef struct Command{
-	const char *name;
-	void (*func)(char ** args, int size);
-	const int requiresDev;
-} Command;
 
 //=============================================================================
-//  Utility Functions
+//  Utility Functions (soon to be util.c and util.h)
 //=============================================================================
+
+/**
+ * @brief clears new line buffer from scanf
+ * 
+ * @details reads and discards all characters in input stream until a newline or end of file (EOF) is found. This prevents leftover input from affecting subsequent reads
+ * 
+*/
 void clearInputBuffer(){
 	int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
-
+/**
+*	@brief Clears console screen.
+*
+*	@details Moves cursor to top left and clears all text in terminal using ANSI escape codes.
+*
+*	@note Works on terminals that suppoer ANSI escape sequences.
+**/
 void clearTerminal(void){
 	printf("\e[1;1H\e[2J");
 }
 
+
+/**
+ * 
+ * @brief Returns the number of arguments in an array of strings
+ * 
+ * @details until it has found the NULL terminator of the array it increments the 'count' variable by 1 for each element that isn't NULL
+ * 
+ * @param an array of strings (in the context of arguements)
+ * 
+ * @return the number of elements found before the function reached the NULL terminator
+ * 
+ * 	**/
 int countArgs(char **args){
 	int count = 0;
 	while(args[count] != NULL){
@@ -84,7 +101,9 @@ int countArgs(char **args){
 	}
 	return count;
 }
-
+//=============================================================================
+//  ERROR HANDLING (Soon to be in err.c and err.h)
+//=============================================================================
 
 typedef enum ErrorCode{
 	INVALID_ARGUMENT = 101,
@@ -99,6 +118,18 @@ typedef enum ErrorCode{
 	CUSTOM_ERR = 1023,
 
 } ErrorCode;
+
+/**
+ * 
+ * @brief Displays an error message to the console if an error is thrown
+ * 
+ * @details The function takes an error code and compares it to a code defined in the 'ErrorCode' enum, and displays a message depending on which error it is
+ * 
+ * @param an ErrorCode and a string for a custom error message
+ * 
+ * @note if CUSTOM_ERR is thown the CustomErrMsg argument cannot be empty, otherwise it is fine to leave it as an empty string
+ * 
+ * 	**/
 void ThrowError(ErrorCode err, char *CustomErrMsg){
 	int customMsg = 0;
 	if(strlen(CustomErrMsg) > 0){
@@ -166,7 +197,7 @@ void ThrowError(ErrorCode err, char *CustomErrMsg){
 }
 
 //=============================================================================
-//  USER HANDLING
+//  USER HANDLING (soon to be usr.c and usr.h)
 //=============================================================================
 
 typedef struct user{
@@ -215,6 +246,13 @@ int login(){
 //=============================================================================
 //  Command Implementations
 //=============================================================================
+
+typedef struct Command{
+	const char *name;
+	void (*func)(char ** args, int size);
+	const int requiresDev;
+} Command;
+
 
 char *helpPages[12] = {
 	"------Page Guide------",
@@ -341,7 +379,7 @@ void power(char **args, int size){
 }
 
 void err(char **args, int size){
-	if(devMode == 1){
+	if(CurrentUser.Dev == 1){
 		int error = atoi(args[0]);
 
 		if(countArgs(args) > 1){
@@ -362,9 +400,7 @@ void enableDev(char **args, int size){
 	} else{
 		int loginSuccess = login();
 		if(loginSuccess == 0){
-			if(CurrentUser.Dev == 1){
-				devMode = 1;
-			} else{
+			if(CurrentUser.Dev != 1){
 				ThrowError(CUSTOM_ERR, "USER NOT A DEVELOPER");
 			}
 		}
