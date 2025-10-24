@@ -105,16 +105,114 @@ int countArgs(char **args){
 //  ERROR HANDLING (Soon to be in err.c and err.h)
 //=============================================================================
 
+
+/**
+ * 
+ * @typedef ErrorCode
+ * @enum ErrorCode
+ * 
+ * 
+ * @brief Links an error name to a specific value for readability
+ * 
+ * 
+ * @details Each error type is grouped into categories:
+ * 	-100s: Invalid input errors
+ * 	-200s: Arithmatic Errors
+ * 	-300s: Type Errors
+ *  -400s: User Errors
+ * 	-500s: Memory and Array Errors
+ *  -600s: Access and Permission Errors
+ * 	-1000+: Custom or undefined errors
+ * 
+ * 
+**/
 typedef enum ErrorCode{
+
+	/** 
+	 * @brief Invalid argument
+	 * @details Used when a function receives an invalid parameter or unexpected input value.
+	 */
+
+
 	INVALID_ARGUMENT = 101,
+
+
+	/** 
+	 * @brief Invalid command
+	 * @details Triggered when the user enters an unsupported or unknown command.
+	 */
+
+
 	INVALID_COMMAND = 102,
+
+
+	/** 
+	 * @brief Invalid syntax
+	 * @details Used when a function receives an invalid parameter or unexpected input value.
+	 */
+
+
 	INVALID_SYNTAX = 103,
+
+
+	/** 
+	 * @brief Invalid credentials
+	 * @details Used when authentication fails due to incorrect login information.
+	 */
+
+
 	INVALID_CREDENTIALS = 104,
+
+	/** 
+	 * @brief Division by zero error
+	 * @details Triggers when a division by zero will occur
+	 */
+
+
 	DIVIDE_BY_ZERO = 201,
+
+	/**
+	 * @brief Type mismatch
+	 * @details Indecates operation recieved incompatible data types 
+	**/
+
+
 	TYPE_MISMATCH = 301,
+
+
+	/**
+	 * @brief User not found
+	 * @details Used an inputted username is not found in system 
+	**/
+
+
 	USER_NOT_FOUND = 401,
+
+
+	/**
+	 * @brief Array Out Of Bounds
+	 * @details Thrown when accessing memory outside of array bounds
+	**/
+
+
 	ARRAY_OUT_OF_BOUNDS = 501,
+
+
+	/**
+	 * @brief Dev Mode Required
+	 * @details triggered when current user tries to run a command (like 'err') that requires dev mode
+	**/
+
+
 	DEV_MODE_REQUIRED = 621,
+
+
+	/**
+	 * @brief Custom Error
+	 * @details Thrown when it's a one time possibility, uses the custom error message input
+	**/
+
+
 	CUSTOM_ERR = 1023,
 
 } ErrorCode;
@@ -200,6 +298,10 @@ void ThrowError(ErrorCode err, char *CustomErrMsg){
 //  USER HANDLING (soon to be usr.c and usr.h)
 //=============================================================================
 
+
+/**
+ * TODO: Document this section on Friday 10/24
+**/
 typedef struct user{
 	char username[10];
 	char password[20];
@@ -244,9 +346,13 @@ int login(){
 }
 
 //=============================================================================
-//  Command Implementations
+//  Command Implementations (soon to be command.h and command.c) 
 //=============================================================================
 
+
+/**
+ * TODO: Document this section on Friday 10/24 AND Saturday 10/25
+**/
 typedef struct Command{
 	const char *name;
 	void (*func)(char ** args, int size);
@@ -427,7 +533,13 @@ Command commands[10] = {
 
 int numOfCmds = sizeof(commands) / sizeof(commands[0]);
 
-//-------Command Utility Functions--------------------------------------------------------------------
+//=============================================================================
+//  Command Parsing (soon to be parser.h and parser.c) 
+//=============================================================================
+
+/**
+ * TODO: Document this section on Sunday 10/26
+**/
 
 int compareCommand(char *cmd){
 	int validCommand = 0;
