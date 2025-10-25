@@ -299,8 +299,24 @@ void ThrowError(ErrorCode err, char *CustomErrMsg){
 //=============================================================================
 
 
+
 /**
- * TODO: Document this section on Friday 10/24
+ * @typedef
+ * @struct
+ * 
+ * @brief Defines Data Components of a user
+ * 
+ * @details The components are
+ * Username: a string of characters that acts as tag that is specific to that user for login
+ * Password: A string of characters used to unlock the user account
+ * Dev: a boolean integer that referrs to access to certian commands 
+ * Admin: a boolean integer that refers to system admin commands **CURRENTLY NO IMPLEMENTATIONS, THINKING ABOUT POSSIBLE FUTURE IMPLEMTNETATIONS**
+ * 
+ * TODO: List users in a file instead of source code
+ * 
+ * 
+ * The default user is: loggedOut, which has no password, and is not a dev nor an admin
+ * 
 **/
 typedef struct user{
 	char username[10];
@@ -318,6 +334,16 @@ user Users[3] = {
 user CurrentUser = {"loggedOut", "", 0, 0};
 
 int userNum = 2;
+
+
+/**
+ * 
+ * @brief changes CurrentUser if login is successful
+ * 
+ * @details The function first takes a username as input, checks if the username exists, if it does it asks for a password:
+ * If any of these fail the function calls ThrowError() with the INVALID_CREDENTIALS or INVALID_USER error codes
+ * 
+ * 	**/
 
 int login(){
 	printf("USERNAME: ");
@@ -375,7 +401,17 @@ char *helpPages[12] = {
 	"Run the command 'help <page number>' for more info"
 };
 
-
+/**
+ * 
+ * @brief
+ * 
+ * @details
+ * 
+ * @param
+ * 
+ * @return
+ * 
+ * 	**/
 void help(char **args, int size){
 	if(args[0] != NULL && args[1] == NULL){
 		int page = atoi(args[0]);
