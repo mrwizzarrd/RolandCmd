@@ -1,10 +1,4 @@
-#ifndef UTIL_H
-#define UTIL_H
-
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <time.h>
+#include "util.h"
 
 
 /**
@@ -13,7 +7,10 @@
  * @details reads and discards all characters in input stream until a newline or end of file (EOF) is found. This prevents leftover input from affecting subsequent reads
  * 
 */
-void clearInputBuffer(void);
+void clearInputBuffer(){
+	int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
 
 /**
 *	@brief Clears console screen.
@@ -22,7 +19,10 @@ void clearInputBuffer(void);
 *
 *	@note Works on terminals that suppoer ANSI escape sequences.
 **/
-void clearTerminal(void);
+void clearTerminal(void){
+	printf("\e[1;1H\e[2J");
+}
+
 
 /**
  * 
@@ -35,6 +35,10 @@ void clearTerminal(void);
  * @return the number of elements found before the function reached the NULL terminator
  * 
  * 	**/
-int countArgs(char **args);
-
-#endif
+int countArgs(char **args){
+	int count = 0;
+	while(args[count] != NULL){
+		count++;
+	}
+	return count;
+}

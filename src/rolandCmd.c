@@ -66,7 +66,7 @@ exit- Exits command line
  * @details reads and discards all characters in input stream until a newline or end of file (EOF) is found. This prevents leftover input from affecting subsequent reads
  * 
 */
-void clearInputBuffer(){
+void clearInputBuffer(void){
 	int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
@@ -375,10 +375,6 @@ int login(){
 //  Command Implementations (soon to be command.h and command.c) 
 //=============================================================================
 
-
-/**
- * TODO: Document this section on Saturday 10/25
-**/
 
 /**
  * @typedef

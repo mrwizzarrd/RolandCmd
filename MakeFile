@@ -1,0 +1,25 @@
+#Project Variables
+
+TARGET = RolandCmd
+SRC_DIR = src
+INC_DIR = include
+CC = gcc
+CFLAGS = -Iinclude -std=c11
+
+#find all .c files in src/
+SRCS = $(wildcard $(SRC_DIR)/*.c)
+OBJS = $(SRCS:.c=.o)
+
+#rules
+all: $(TARGET)
+
+#Links object files
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(TARGET).exe
+
+#after compilation
+clean:
+	rm -f $(SRC_DIR)/*.o $(TARGET)
+
+rebuild: clean all
+
