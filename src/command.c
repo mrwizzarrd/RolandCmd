@@ -6,9 +6,13 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include "error.h"
+#include "util.h"
+#include "usr.h"
+#include "command.h"
+ 
 
-
-char *helpPages[12] = {
+char *helpPages[13] = {
 	"------Page Guide------",
 	"1- Help Command",
 	"2- Math Commands",
@@ -20,7 +24,8 @@ char *helpPages[12] = {
 	"8- COMING SOON (maybe)",
 	"9- COMING SOON (maybe)",
 	"10- COMING SOON (maybe)",
-	"Run the command 'help <page number>' for more info"
+	"Run the command 'help <page number>' for more info",
+	NULL
 };
 
 /**

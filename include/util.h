@@ -1,10 +1,25 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+//#define _POSIX_C_SOURCE 199309L
+
+#include <time.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <time.h>
+#ifdef _WIN32
+	#include <windows.h>
+	#define sleep_ms(ms) Sleep(ms)
+#else
+	#include <unistd.h>
+	static inline void sleep_ms(int ms){
+		struct timespec ts;
+		ts.tv_sec = ms / 1000;
+		ts.tv_nsec = (ms % 1000) * 1000000;
+	    nanosleep(&ts, NULL);
+	}
+#endif
+
 
 
 /**

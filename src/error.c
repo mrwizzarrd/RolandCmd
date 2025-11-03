@@ -1,5 +1,9 @@
 #include "error.h"
-
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
+#include "util.h"
 /**
  * 
  * @brief Displays an error message to the console if an error is thrown

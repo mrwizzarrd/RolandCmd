@@ -34,18 +34,6 @@ exit- Exits command line
 
 */
 
-#ifdef _Win32
-	#include <windows.h>
-	#define sleep_ms(ms) Sleep(ms)
-#else
-	#include <unistd.h>
-	static inline void sleep_ms(int ms){
-		struct timespec ts;
-		ts.tv_sec = ms / 1000;
-		ts.tv_nsec = (ms % 1000) * 1000000;
-	    nanosleep(&ts, NULL);
-	}
-#endif
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

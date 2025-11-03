@@ -155,5 +155,10 @@ void err(char **args, int size);
 void enableDev(char **args, int size);
 
 
+extern Command commands[];
+extern int numOfCmds;
+
+#endif
+
 
 

@@ -1,4 +1,9 @@
 #include "usr.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
+#include "util.h"
 
 user Users[3] = {
 	{"loggedOut", "", 0, 0},

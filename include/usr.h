@@ -33,6 +33,10 @@ typedef struct user{
 	int admin;
 } user;
 
+extern user Users[3];
+extern user CurrentUser;
+extern int userNum;
+
 
 /**
  * 
