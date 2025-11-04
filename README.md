@@ -22,7 +22,7 @@ cd RolandCmd
 
 
 
-\## Linux/macOS
+## Linux/macOS
 
 ```bash
 
@@ -32,7 +32,8 @@ cd RolandCmd
 
 make
 
-./RolandCmd```
+./RolandCmd
+```
 
 
 
