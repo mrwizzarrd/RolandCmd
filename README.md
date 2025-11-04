@@ -20,8 +20,6 @@ cd RolandCmd
 
 ```
 
-
-
 ## Linux/macOS
 
 ```bash
@@ -36,9 +34,7 @@ make
 ```
 
 
-
-
-## About This Project
+### About This Project
 
 
 This project was originally going to be a small way to learn applications of pointers to functions, but then I started getting into it more and more, learning ways to improve my code and document it. This is my first project I actually am proud of enough to post it publicly, as I have learned so many skills from this project.
