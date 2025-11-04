@@ -1,0 +1,32 @@
+@echo off
+REM ---Clean Old Build---
+if exist RolandCmd.exe del RolandCmd.exe
+cd src
+if exist main.o del main.o
+if exist parser.o del parser.o
+if exist util.o del util.o
+if exist usr.o del usr.o
+if exist error.o del error.o
+if exist command.o del command.o
+cd ..
+
+REM --Compile New Build into Object Files---
+cd src
+gcc -I..\include -c main.c -o main.o
+gcc -I..\include -c util.c -o util.o
+gcc -I..\include -c parser.c -o parser.o
+gcc -I..\include -c usr.c -o usr.o
+gcc -I..\include -c command.c -o command.o
+gcc -I..\include -c error.c -o error.o
+
+REM --Compile Object Files into Executable--
+gcc main.o util.o parser.o usr.o command.o error.o -o ..\RolandCmd.exe
+
+REM ---Clean Up Object Files---
+del main.o
+del parser.o
+del util.o
+del usr.o
+del error.o
+del command.o
+cd ..
