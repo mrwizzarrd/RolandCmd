@@ -37,19 +37,19 @@ make
 ## About This Project
 
 
-This project was originally going to be a small way to learn applications of pointers to functions, but then I started getting into it more and more, learning ways to improve my code and document it. This is my first project I actually am proud of enough to post it publicly, as I have learned so many skills from this project.
+This project was originally going to be a small way to learn applications of function pointers, but quickly became much more than that.
+As I worked on it, I learned how to structure my code, organize multiple files, document my work, and use Git for version control.
+This is the first project I've been proud enough about to post publicly, because of how much I learned while working on it and how far it's come.
 
 
 
-Here is a list of the things I have learned from this project:
+
+## Skills Learned: 
 
 -Function Pointer Usage
-
 -Struct, Typedef, and Enum usage
 -Git Basics
-
 -Doxygen Code Documentation
 -Modular Code Design
-
 -Multi header code compilation using makefiles
 
