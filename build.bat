@@ -32,3 +32,5 @@ del usr.o
 del error.o
 del command.o
 cd ..
+
+echo Build Complete

@@ -139,6 +139,17 @@ void power(char **args, int size);
 
 void history(char **args, int size);
 
+/**
+ * 
+ * @brief "factorial" Command
+ * 
+ * @details accepts only one argument and prints the factorial of that number
+ * 
+ * @param a pointer to an array of strings that are command arguments, and an integer which is the size of the array
+ * 
+ * 	**/
+void factorial(char **args, int size);
+
 
 /**
  * 

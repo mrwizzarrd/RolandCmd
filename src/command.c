@@ -13,18 +13,13 @@
 #include "history.h"
  
 
-char *helpPages[13] = {
+char *helpPages[8] = {
 	"------Page Guide------",
 	"1- Help Command",
 	"2- Math Commands",
 	"3- Utilities",
-	"4- COMING SOON (maybe)",
-	"5- COMING SOON (maybe)",
-	"6- COMING SOON (maybe)",
-	"7- COMING SOON (maybe)",
-	"8- COMING SOON (maybe)",
-	"9- COMING SOON (maybe)",
-	"10- COMING SOON (maybe)",
+	"4- File System Commands",
+	"5- Fun Commands",
 	"Run the command 'help <page number>' for more info",
 	NULL
 };
@@ -54,14 +49,20 @@ void help(char **args, int size){
 				printf("square <int>- Computes the value of the square of an integer \n");
 				printf("cube <int>- Computes the value of the cube of an integer \n");
 				printf("pow <int> <int>- computes the power of a base\n");
+				printf("factorial <int>- somputes the factorial of a value\n");
 				break;
 			case 3:
 				printf("exit- exits console\n");
 				printf("clear- clears console\n");
 				printf("history- prints the entire history of the session\n");
 				break;
+			case 4:
+				printf("COMING SOON\n");
+				break;
+			case 5:
+				printf("COMING SOON\n");
 			default:
-				printf("Invalid Argument\n");
+				ThrowError(INVALID_ARGUMENT, "");
 		}
 
 	} else if(args[0] == NULL){
@@ -165,6 +166,28 @@ void cube(char **args, int size){
 	}
 }
 
+/**
+ * 
+ * @brief "factorial" Command
+ * 
+ * @details accepts only one argument and prints the factorial of that number
+ * 
+ * @param a pointer to an array of strings that are command arguments, and an integer which is the size of the array
+ * 
+ * 	**/
+void factorial(char **args, int size){
+	if(countArgs(args) != 1){
+		ThrowError(INVALID_SYNTAX, "");
+	} else{
+		int result = 1;
+		int value = atoi(args[0]);
+
+		for(int i = value; i > 1; i--){
+			result *= i;
+		}
+		printf("%d! = %d\n", value, result);
+	}
+}
 
 /**
  * 
@@ -306,7 +329,7 @@ void enableDev(char **args, int size){
 //void (*commandFuncs[10])(char **, int) = {help, sum, subtract, square, cmdexit, clearConsole, cube, power, err, arrayTerminator};
 
 
-Command commands[11] = {
+Command commands[12] = {
 	{"help", help, 0},
 	{"add", sum, 0},
 	{"subtract", subtract, 0},
@@ -315,6 +338,7 @@ Command commands[11] = {
 	{"clear", clearConsole, 0},
 	{"cube", cube, 0},
 	{"pow", power, 0},
+	{"factorial", factorial, 0},
 	{"history", history, 0},
 	{"devmode", enableDev, 0},
 	{"err", err, 1},
