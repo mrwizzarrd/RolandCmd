@@ -32,7 +32,8 @@ cd RolandCmd
 
 make
 
-./RolandCmd```
+./RolandCmd
+```
 
 
 
