@@ -99,6 +99,15 @@ typedef enum ErrorCode{
 
 
 	/**
+	 * @brief Memory Allocation Failed
+	 * @details Thrown when allocation of dynamic memory fails (malloc/realloc)
+	**/
+
+
+	MEMORY_ALLOCATION_FAILED = 502,
+
+
+	/**
 	 * @brief Dev Mode Required
 	 * @details triggered when current user tries to run a command (like 'err') that requires dev mode
 	**/

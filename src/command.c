@@ -10,6 +10,7 @@
 #include "util.h"
 #include "usr.h"
 #include "command.h"
+#include "history.h"
  
 
 char *helpPages[13] = {
@@ -57,6 +58,7 @@ void help(char **args, int size){
 			case 3:
 				printf("exit- exits console\n");
 				printf("clear- clears console\n");
+				printf("history- prints the entire history of the session\n");
 				break;
 			default:
 				printf("Invalid Argument\n");
@@ -228,6 +230,24 @@ void power(char **args, int size){
 	}
 }
 
+/**
+ * @brief "history" command
+ * 
+ * @details prints the entire history of the current session
+ * 
+ * TODO: allow for users to enter a max number of lines
+ * 
+**/
+
+void history(char **args, int size){
+	if(countArgs(args) != 0){
+		ThrowError(INVALID_SYNTAX, "");
+	} else{
+		for (size_t i = 0; i < CmdHistory->usage; i++){
+			printf("%s\n", CmdHistory->history_data[i]);
+		}
+	}
+}
 
 /**
  * 
@@ -286,7 +306,7 @@ void enableDev(char **args, int size){
 //void (*commandFuncs[10])(char **, int) = {help, sum, subtract, square, cmdexit, clearConsole, cube, power, err, arrayTerminator};
 
 
-Command commands[10] = {
+Command commands[11] = {
 	{"help", help, 0},
 	{"add", sum, 0},
 	{"subtract", subtract, 0},
@@ -295,6 +315,7 @@ Command commands[10] = {
 	{"clear", clearConsole, 0},
 	{"cube", cube, 0},
 	{"pow", power, 0},
+	{"history", history, 0},
 	{"devmode", enableDev, 0},
 	{"err", err, 1},
 };

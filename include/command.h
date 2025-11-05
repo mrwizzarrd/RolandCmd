@@ -129,6 +129,18 @@ void clearConsole(char **args, int size);
 void power(char **args, int size);
 
 /**
+ * @brief "history" command
+ * 
+ * @details prints the entire history of the current session
+ * 
+ * TODO: allow for users to enter a max number of lines
+ * 
+**/
+
+void history(char **args, int size);
+
+
+/**
  * 
  * @brief "err" Command
  * 

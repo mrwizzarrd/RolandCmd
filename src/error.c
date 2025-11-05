@@ -76,6 +76,12 @@ void ThrowError(ErrorCode err, char *CustomErrMsg){
 			ThrowError(CUSTOM_ERR, "CUSTOM ERROR HANDLER MISSING ERROR MESSAGE\n");
 		}
 		break;
+	case MEMORY_ALLOCATION_FAILED:
+		printf("ERROR: Memory Allocation Failed\n");
+		if(customMsg){
+			printf("Additional info:\n\t%s\n", CustomErrMsg);
+		}
+
 	default:
 		printf("ERROR: THROWN ERROR NOT FOUND\n");
 	}

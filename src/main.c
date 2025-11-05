@@ -43,10 +43,12 @@ exit- Exits command line
 #include "command.h"
 #include "error.h"
 #include "util.h"
+#include "history.h"
 
 
 
 int main(void){
+	InitHistory();
 	char command[50];
 
 	command[0] = '\0';
@@ -56,6 +58,8 @@ int main(void){
 		char *args[19];
 		printf(">");
 		fgets(command, sizeof(command), stdin);
+		char fullCommand[50];
+		strcpy(fullCommand, command);
 		command[strcspn(command, "\n")] = '\0';
 
 		//printf("%s\n", command);
@@ -71,6 +75,7 @@ int main(void){
 
 		if (commandIndex >= 0 && commandIndex < numOfCmds) {
     		commands[commandIndex].func(args, argCount);
+    		addHistory(CmdHistory, fullCommand);
 		}
 
 		if(strcmp(command, "exit") == 0){

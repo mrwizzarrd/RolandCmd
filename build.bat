@@ -8,6 +8,7 @@ if exist util.o del util.o
 if exist usr.o del usr.o
 if exist error.o del error.o
 if exist command.o del command.o
+if exist history.o del history.o
 cd ..
 
 REM --Compile New Build into Object Files---
@@ -18,9 +19,10 @@ gcc -I..\include -c parser.c -o parser.o
 gcc -I..\include -c usr.c -o usr.o
 gcc -I..\include -c command.c -o command.o
 gcc -I..\include -c error.c -o error.o
+gcc -I..\include -c history.c -o history.o
 
 REM --Compile Object Files into Executable--
-gcc main.o util.o parser.o usr.o command.o error.o -o ..\RolandCmd.exe
+gcc main.o util.o parser.o usr.o command.o error.o history.o -o ..\RolandCmd.exe
 
 REM ---Clean Up Object Files---
 del main.o
