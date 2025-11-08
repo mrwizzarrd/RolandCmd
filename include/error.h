@@ -22,6 +22,7 @@
  *  -400s: User Errors
  * 	-500s: Memory and Array Errors
  *  -600s: Access and Permission Errors
+ *  -700s: File Errors
  * 	-1000+: Custom or undefined errors
  * 
  * 
@@ -114,6 +115,33 @@ typedef enum ErrorCode{
 
 
 	DEV_MODE_REQUIRED = 621,
+
+
+	/**
+	 * @brief File already exists error
+	 * @details Thrown when user tries to create a file with a filename that's in use 
+	**/
+
+
+	FILE_EXISTS = 701,
+
+
+	/**
+	 * @brief File error
+	 * @details Thrown when a generic file error happens
+	**/
+
+
+	FILE_ERROR = 703,
+
+
+	/**
+	 * @brief File not found
+	 * @details Thrown when the user tries to access a file that doesn't exist
+	**/
+
+
+	FILE_NOT_FOUND = 702,
 
 
 	/**

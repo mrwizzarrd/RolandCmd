@@ -76,6 +76,26 @@ void ThrowError(ErrorCode err, char *CustomErrMsg){
 			ThrowError(CUSTOM_ERR, "CUSTOM ERROR HANDLER MISSING ERROR MESSAGE\n");
 		}
 		break;
+	case FILE_ESISTS:
+		printf("ERROR: File already exists\n");
+		if(customMsg){
+			printf("Additional info:\n\t%s\n", CustomErrMsg);
+		}
+		break;
+	case FILE_ERROR:
+		printf("ERROR: File Error\n");
+		if(customMsg){
+			printf("Additional info:\n\t%s\n", CustomErrMsg);
+		}
+		break;
+
+	case FILE_NOT_FOUND:
+		printf("ERROR: File doesn't exist\n");
+		if(customMsg){
+			printf("Additional info:\n\t%s\n", CustomErrMsg);
+		}
+		break;
+
 	case MEMORY_ALLOCATION_FAILED:
 		printf("ERROR: Memory Allocation Failed\n");
 		if(customMsg){

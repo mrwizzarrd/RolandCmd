@@ -11,6 +11,7 @@
 #include "usr.h"
 #include "command.h"
 #include "history.h"
+#include "file.h"
  
 
 char *helpPages[8] = {
@@ -270,6 +271,32 @@ void history(char **args, int size){
 			printf("%s\n", CmdHistory->history_data[i]);
 		}
 	}
+}
+
+/**
+ * @brief "mkfile" command
+ * 
+ * @details makes a new file
+ * 
+**/
+
+void MakeFile(char **args, int size){
+	if(countArgs(args) != 1){
+		ThrowError(INVALID_SYNTAX, "");
+	} else{
+		char *filename = args[0];
+		int success = createFile(filename);
+
+		switch(success){
+		case -1:
+			ThrowError(FILE_ERROR, "");
+		case -2:
+			ThrowError(FILE_EXISTS, "");
+		default:
+			printf("File %s created successfully\n", filename);
+		}
+	}
+
 }
 
 /**
