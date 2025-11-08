@@ -356,7 +356,7 @@ void enableDev(char **args, int size){
 //void (*commandFuncs[10])(char **, int) = {help, sum, subtract, square, cmdexit, clearConsole, cube, power, err, arrayTerminator};
 
 
-Command commands[12] = {
+Command commands[13] = {
 	{"help", help, 0},
 	{"add", sum, 0},
 	{"subtract", subtract, 0},
@@ -367,6 +367,7 @@ Command commands[12] = {
 	{"pow", power, 0},
 	{"factorial", factorial, 0},
 	{"history", history, 0},
+	{"mkfile", MakeFile, 0},
 	{"devmode", enableDev, 0},
 	{"err", err, 1},
 };
