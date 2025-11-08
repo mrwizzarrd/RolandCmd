@@ -76,7 +76,7 @@ void ThrowError(ErrorCode err, char *CustomErrMsg){
 			ThrowError(CUSTOM_ERR, "CUSTOM ERROR HANDLER MISSING ERROR MESSAGE\n");
 		}
 		break;
-	case FILE_ESISTS:
+	case FILE_EXISTS:
 		printf("ERROR: File already exists\n");
 		if(customMsg){
 			printf("Additional info:\n\t%s\n", CustomErrMsg);

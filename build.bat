@@ -22,7 +22,7 @@ gcc -I..\include -c history.c -o history.o
 gcc -I..\include -c file.c -o file.o
 
 REM --Compile Object Files into Executable--
-gcc main.o util.o parser.o usr.o command.o error.o history.o -o ..\RolandCmd.exe
+gcc main.o util.o parser.o usr.o command.o error.o history.o file.o -o ..\RolandCmd.exe
 
 REM ---Clean Up Object Files---
 del main.o

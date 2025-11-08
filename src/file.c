@@ -17,12 +17,13 @@
  * @details checks if file exists, if it does throws FILE_EXISTS error, otherwise it creates file
  * 
  * @param filename Name of file to create
+ * 
+ * @return int 0 = success, -1 = file already exists, -2 = error creating file
  *  
 **/
-void createFile(const char *filename){
+int createFile(const char *filename){
 	FILE* check = fopen(filename, "r");
 	if(check){
-		ThrowError(FILE_EXISTS, "");
 		fclose(check);
 		return -1;
 	}
@@ -31,8 +32,7 @@ void createFile(const char *filename){
 	if(file == NULL){
 		return -2;
 	}
-	}
-	fclose(filename);
+	fclose(file);
 	return 0;
 }
 

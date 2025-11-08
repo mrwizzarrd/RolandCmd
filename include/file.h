@@ -2,12 +2,11 @@
  * @file file.h
  * 
  * @brief file handler
- *
  * 
  * @author Roland Vermiglio
 **/
 
-#ifndf FILE_H
+#ifndef FILE_H
 #define FILE_H
 
 #include <stdio.h>
@@ -21,7 +20,7 @@
  * @param string for filename
  *  
 **/
-int createFile(char *filename);
+int createFile(const char *filename);
 
 
 /**
