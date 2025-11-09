@@ -150,6 +150,17 @@ void history(char **args, int size);
  * 	**/
 void factorial(char **args, int size);
 
+/**
+ * 
+ * @brief "fibonacci" Command
+ * 
+ * @details accepts only one argument and prints the numbers in the fibonacci sequence up to that index
+ * 
+ * @param a pointer to an array of strings that are command arguments, and an integer which is the size of the array
+ * 
+ * 	**/
+
+void fibonacci(char **args, int size);
 
 /**
  * 
@@ -160,6 +171,7 @@ void factorial(char **args, int size);
  * @param a pointer to an array of strings that are command arguments, and an integer which is the size of the array
  * 
  * 	**/
+
 
 void err(char **args, int size);
 

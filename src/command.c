@@ -48,8 +48,9 @@ void help(char **args, int size){
 				printf("subtract <int> <int>- Computes the difference of two integers\n");
 				printf("square <int>- Computes the value of the square of an integer \n");
 				printf("cube <int>- Computes the value of the cube of an integer \n");
-				printf("pow <int> <int>- computes the power of a base\n");
-				printf("factorial <int>- somputes the factorial of a value\n");
+				printf("pow <int> <int>- Computes the power of a base\n");
+				printf("factorial <int>- Computes the factorial of a value\n");
+				printf("fib <int>- Computes values of the fibonacci sqtuence up to a specific index\n");
 				break;
 			case 3:
 				printf("exit- exits console\n");
@@ -186,6 +187,45 @@ void factorial(char **args, int size){
 			result *= i;
 		}
 		printf("%d! = %d\n", value, result);
+	}
+}
+
+/**
+ * 
+ * @brief "fibonacci" Command
+ * 
+ * @details accepts only one argument and prints the numbers in the fibonacci sequence up to that index
+ * 
+ * @param a pointer to an array of strings that are command arguments, and an integer which is the size of the array
+ * 
+ * 	**/
+
+void fibonacci(char **args, int size){
+	if(countArgs(args) == 1 && atoi(args[0])){
+		int fibnm2 = 0; 
+		printf("%d ", fibnm2);
+		int fibnm1 = 1;
+		printf("%d ", fibnm1);
+		int fibn;
+
+		for(int i = 2; i < atoi(args[0]) + 1; i++){
+			fibn = fibnm1 + fibnm2;
+			fibnm2 = fibnm1;
+			fibnm1 = fibn;
+
+			printf("%d ", fibn);
+
+			if(i % 5 == 0){
+				printf("\n");
+			}
+
+		}
+	} else if(countArgs(args) != 1){
+		ThrowError(INVALID_ARGUMENT, "fibonacci command only accepts one argument");
+	} else if(!atoi(args[0])){
+		ThrowError(INVALID_ARGUMENT, "fibonacci command only handles integer values");
+	} else{
+		ThrowError(INVALID_SYNTAX, "");
 	}
 }
 
@@ -329,7 +369,7 @@ void enableDev(char **args, int size){
 //void (*commandFuncs[10])(char **, int) = {help, sum, subtract, square, cmdexit, clearConsole, cube, power, err, arrayTerminator};
 
 
-Command commands[12] = {
+Command commands[13] = {
 	{"help", help, 0},
 	{"add", sum, 0},
 	{"subtract", subtract, 0},
@@ -339,6 +379,7 @@ Command commands[12] = {
 	{"cube", cube, 0},
 	{"pow", power, 0},
 	{"factorial", factorial, 0},
+	{"fib", fibonacci, 0},
 	{"history", history, 0},
 	{"devmode", enableDev, 0},
 	{"err", err, 1},
