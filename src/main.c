@@ -44,6 +44,7 @@ exit- Exits command line
 #include "error.h"
 #include "util.h"
 #include "history.h"
+#include "file.h"
 
 
 
