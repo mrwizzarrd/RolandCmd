@@ -21,6 +21,38 @@
 #endif
 
 
+//time to refactor 25 functions of legacy code that uses static arrays
+//fml
+/** 
+ * @typedef
+ * @struct DynamicStringArray that has 3 properties:
+ * size_t size: the current number of elements in the array
+ * size_t maxStringLength: the max amount of characters in the string
+ * size_t ArrayCapacity: The max elements in array
+ * char **data: the actual data of the array
+ *  
+**/
+
+typedef struct {
+	size_t size;
+	size_t maxStringLength;
+	size_t ArrayCapacity;
+	char **data;
+} DynamicStringArray;
+
+
+/**
+ * @brief creates a dynamic string array
+ * 
+ * @details allocates a lot of memory lol, I'll update these docs later probably
+ * 
+ * @param initialCapacity
+ * @param initialStringCapacity
+ * 
+*/
+DynamicStringArray CreateDynamicArray(size_t initialCapacity, size_t initialStringCapacity);
+
+
 
 /**
  * @brief clears new line buffer from scanf

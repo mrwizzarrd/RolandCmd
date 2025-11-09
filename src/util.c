@@ -4,6 +4,31 @@
 #include <stdlib.h>
 #include <time.h>
 
+/**
+ * @brief creates a dynamic string array
+ * 
+ * @details allocates a lot of memory lol, I'll update these docs later probably
+ * 
+ * @param initialCapacity: initial array capacity
+ * @param initialStringCapacity: initial string element capacity
+ * 
+*/
+DynamicStringArray CreateDynamicArray(size_t initialCapacity, size_t initialStringCapacity){
+	DynamicStringArray arr;
+
+	arr.size = 0;
+	arr.ArrayCapacity = initialCapacity;
+	arr.maxStringLength = initialStringCapacity;
+
+	arr.data = malloc(initialCapacity * sizeof(char*));
+
+	for(size_t i = 0; i < initialCapacity; i++){
+		arr.data[i] = calloc(initialStringCapacity, sizeof(char));
+	}
+
+	return arr;
+}
+
 
 /**
  * @brief clears new line buffer from scanf

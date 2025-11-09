@@ -10,6 +10,7 @@
 #define FILE_H
 
 #include <stdio.h>
+#include <stdbool.h>
 
 
 /**
@@ -32,5 +33,20 @@ int createFile(const char *filename);
  *  
 **/
 int deleteFile(char *filename);
+
+/**
+ * @brief creates new file 
+ * 
+ * @details checks if file exists, if it does throws FILE_EXISTS error, otherwise it creates file
+ * 
+ * @param filename Name of file to write to
+ * @param content content to write to file
+ * @param newline 
+ * 
+ * @return int 0 = success, -1 = file not found, -2 = error opening file
+ *  
+**/
+
+int writeToFile(char *filename, char *content, bool newline);
 
 #endif

@@ -32,7 +32,8 @@ char *helpPages[8] = {
  * @details If there are no arguments, the command displays the different help pages, if there is a valid argument (the help page number)
  * the command displays the specific page requested
  * 
- * @param a pointer to an array of strings that are parsed command arguments, and an integer which is the size of the array
+ * @param args a pointer to an array of strings that are parsed command arguments
+ * @param size an integer which is the size of the array
  * 
  * 	**/
 
@@ -84,7 +85,8 @@ void help(char **args, int size){
  * 
  * @details Takes all the valid arguments and prints the sum of all the numbers, accepts as many arguments as the program will allow
  * 
- * @param a pointer to an array of strings that are command arguments, and an integer which is the size of the array
+ * @param args a pointer to an array of strings that are parsed command arguments
+ * @param size an integer which is the size of the array
  * 
  * TODO: Make it accept floating point numbers
  * 
@@ -107,7 +109,8 @@ void sum(char **args, int size){
  * 
  * @details accepts only 2 arguments, and returns the difference between the two
  * 
- * @param a pointer to an array of strings that are command arguments, and an integer which is the size of the array
+ * @param args a pointer to an array of strings that are parsed command arguments
+ * @param size an integer which is the size of the array
  * 
  * TODO: Make it accept floating point numbers
  * 
@@ -134,7 +137,8 @@ void subtract(char **args, int size){
  * 
  * @details accepts only one argument and prints the square of that number
  * 
- * @param a pointer to an array of strings that are command arguments, and an integer which is the size of the array
+ * @param args a pointer to an array of strings that are parsed command arguments
+ * @param size an integer which is the size of the array
  * 
  * TODO: Make it accept floating point numbers
  * 
@@ -156,7 +160,8 @@ void square(char **args, int size){
  * 
  * @details accepts only one argument and prints the cube of that number
  * 
- * @param a pointer to an array of strings that are command arguments, and an integer which is the size of the array
+ * @param args a pointer to an array of strings that are parsed command arguments
+ * @param size an integer which is the size of the array
  * 
  * 	**/
 void cube(char **args, int size){
@@ -174,7 +179,8 @@ void cube(char **args, int size){
  * 
  * @details accepts only one argument and prints the factorial of that number
  * 
- * @param a pointer to an array of strings that are command arguments, and an integer which is the size of the array
+ * @param args a pointer to an array of strings that are parsed command arguments
+ * @param size an integer which is the size of the array
  * 
  * 	**/
 void factorial(char **args, int size){
@@ -197,7 +203,8 @@ void factorial(char **args, int size){
  * 
  * @details accepts only one argument and prints the numbers in the fibonacci sequence up to that index
  * 
- * @param a pointer to an array of strings that are command arguments, and an integer which is the size of the array
+ * @param args a pointer to an array of strings that are parsed command arguments
+ * @param size an integer which is the size of the array
  * 
  * 	**/
 
@@ -236,7 +243,8 @@ void fibonacci(char **args, int size){
  * 
  * @details Prints "Exiting Command line" and sleeps for 750 milliceconds
  * 
- * @param a pointer to an array of strings that are command arguments, and an integer which is the size of the array
+ * @param args a pointer to an array of strings that are parsed command arguments
+ * @param size an integer which is the size of the array
  * 
  * 	**/
 
@@ -252,7 +260,8 @@ void cmdexit(char **args, int size){
  * 
  * @details calls the clearTerminal() function if there are zero arguments in the args array
  * 
- * @param a pointer to an array of strings that are command arguments, and an integer which is the size of the array
+ * @param args a pointer to an array of strings that are parsed command arguments
+ * @param size an integer which is the size of the array
  * 
  * 	**/
 
@@ -271,8 +280,8 @@ void clearConsole(char **args, int size){
  * @brief "pow" Command
  * 
  * @details only takes 2 arguments, an integer base and an integer exponent, and returns the result when the base is raised to the power of that exponent
- * 
- * @param a pointer to an array of strings that are command arguments, and an integer which is the size of the array
+ * @param args a pointer to an array of strings that are parsed command arguments
+ * @param size an integer which is the size of the array@param a pointer to an array of strings that are command arguments, and an integer which is the size of the array
  * 
  * 	**/
 
@@ -299,6 +308,9 @@ void power(char **args, int size){
  * 
  * @details prints the entire history of the current session
  * 
+ * @param args a pointer to an array of strings that are parsed command arguments
+ * @param size an integer which is the size of the array
+ * 
  * TODO: allow for users to enter a max number of lines
  * 
 **/
@@ -317,6 +329,9 @@ void history(char **args, int size){
  * @brief "mkfile" command
  * 
  * @details makes a new file
+ * 
+ * @param args a pointer to an array of strings that are parsed command arguments
+ * @param size an integer which is the size of the array
  * 
 **/
 
@@ -340,12 +355,61 @@ void MakeFile(char **args, int size){
 }
 
 /**
+ * @brief "rmfile" command
+ * 
+ * @details removes a file
+ * 
+ * @param args a pointer to an array of strings that are parsed command arguments
+ * @param size an integer which is the size of the array
+ * 
+**/
+
+void RemoveFile(char **args, int size){
+	if(countArgs(args) != 1){
+		ThrowError(INVALID_ARGUMENT, "");
+		return;
+	}
+
+	int success = deleteFile(args[0]);
+
+	switch (success)
+	{
+	case -1:
+		ThrowError(FILE_NOT_FOUND, "");
+		break;
+	case 0:
+		ThrowError(FILE_ERROR, "");
+	
+	default:
+		printf("File %s deleted successfuly\n");
+		break;
+	}
+
+}
+
+/**
+ * @brief "appline" command
+ * 
+ * @details appends content to a new line of a file
+ * 
+ * @param args a pointer to an array of strings that are parsed command arguments
+ * @param size an integer which is the size of the array
+ * 
+**/
+
+void WriteLine(char **args, int size){
+	
+}
+
+
+/**
  * 
  * @brief "err" Command
  * 
  * @details if the current user is a developer it throws the given error code, or if there is no arguments it just prints "err", otherwise it throws the error DEV_MODE_REQUIRED
  * 
- * @param a pointer to an array of strings that are command arguments, and an integer which is the size of the array
+ * @param args a pointer to an array of strings that are parsed command arguments
+ * @param size an integer which is the size of the array
  * 
  * 	**/
 
@@ -372,7 +436,8 @@ void err(char **args, int size){
  * 
  * @details if the login() function is sucessful it checks if that user has dev access and if not it throws a custom error with message "USER NOT A DEVELOPER"
  * 
- * @param a pointer to an array of strings that are command arguments, and an integer which is the size of the array
+ * @param args a pointer to an array of strings that are parsed command arguments
+ * @param size an integer which is the size of the array
  * 
  * 
  * TODO: Check if user "loggedOut" is the current user and only prompt a login if it is
