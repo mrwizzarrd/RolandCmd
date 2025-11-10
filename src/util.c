@@ -29,6 +29,74 @@ DynamicStringArray CreateDynamicArray(size_t initialCapacity, size_t initialStri
 	return arr;
 }
 
+/**
+ * @brief adds element to string array
+ * 
+ * @details if the array is full it reallocates the array, doubling the memory usage, 
+ * if there's a sting larger than the max string allowed it also reallocates all elements to have that much memory 
+ * 
+ * @param arr:
+ * @param element:
+ * 
+ * @return Status code: -3: Memory Error 0: Success 
+**/
+
+int AddString(DynamicStringArray* arr, char* element){
+	if(arr->ArrayCapacity == arr->size){
+		arr->ArrayCapacity *= 2;
+		char **temp = realloc(arr->data, arr->ArrayCapacity * sizeof(char*));
+
+		if(!temp){
+			return -3;
+		}
+
+		arr->data = temp;
+
+		for(size_t i = arr->size; i < arr->ArrayCapacity; i++){
+			arr->data[i] = NULL;
+		}
+	}
+
+	if(strlen(element) >= arr->maxStringLength){
+		arr->maxStringLength *= 2;
+		for(size_t i = 0; i < arr->ArrayCapacity; i++){
+
+			char *newStr = realloc(arr->data[i], arr->maxStringLength * sizeof(char));
+			arr->data[i] = newStr;
+
+			if(!newStr){
+				return -3;
+			}
+		}
+	}
+	arr->data[arr->size] = malloc(arr->maxStringLength);
+    if(!arr->data[arr->size]){
+		return -3;
+	}
+	
+	strcpy(arr->data[arr->size], element);
+	arr->size++;
+    arr->data[arr->size] = NULL;
+
+	return 0;
+}
+
+/**
+ * @brief frees the array
+ * 
+ * @details frees every element and the array to the system's memory
+ * 
+ * @param arr: DynamicStringArray object to be freed
+ *  
+**/
+
+void FreeStringArray(DynamicStringArray* arr){
+	for(size_t i = 0; i < arr->ArrayCapacity; i++){
+		free(arr->data[i]);
+	}
+	free(arr->data);
+}
+
 
 /**
  * @brief clears new line buffer from scanf
@@ -69,5 +137,7 @@ int countArgs(char **args){
 	while(args[count] != NULL){
 		count++;
 	}
+
+	//printf("Args FOUND: %d\n", count);
 	return count;
 }

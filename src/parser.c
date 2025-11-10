@@ -5,6 +5,8 @@
 #include <time.h>
 #include "util.h"
 
+
+
 /**
  * 
  * @brief Checks of the command is a valid command
@@ -63,40 +65,40 @@ int getCmdIndex(char *cmd){
  * @param takes three parameters
  * a pointer to the command string
  * a pointer to the command index integer
- * a pointer to the array of strings for arguments
+ * a pointer to the dynamic array of strings for arguments
  * 
  * 
  * 	**/
 
-void parseCommand(char *command, int *commandIndex, char **args){
-	char *commandParsed[20];
-	char *token = strtok(command, " ");
+void parseCommand(char *command, int *commandIndex, DynamicStringArray *args){
 
-	int index = 0;
-	while(token != NULL && 20 > index){
-		commandParsed[index] = token;
-		token = strtok(NULL, " ");
-		index++;
+	//printf("entered parser\n");
+	char *commandName = strtok(command, " ");
+
+	if(commandName == NULL){
+		ThrowError(INVALID_COMMAND, "");
+		*commandIndex = -1;
+		return;
 	}
-	commandParsed[index] = NULL;
+
+	if(compareCommand(commandName) != 1){
+		ThrowError(INVALID_COMMAND, "");
+		*commandIndex = -1;	
+		return;
+	} 	else{
+		*commandIndex = getCmdIndex(commandName);
+	}	
+	char *token = strtok(NULL, " ");
+	while(token != NULL){
+		AddString(args, token);
+		token = strtok(NULL, " ");
+	}
 
 	//printf("%s\n", commandParsed[0]);
 
-	int arg_i = 0;
-	for (int j = 1; commandParsed[j] != NULL; j++) {
-	    args[arg_i++] = commandParsed[j];
-	}
-	args[arg_i] = NULL;
 
-	if (commandParsed[0] == NULL) {
-	    *commandIndex = -1;
-	    return;
-	}
-
-	if(compareCommand(commandParsed[0]) != 1){
-		ThrowError(INVALID_COMMAND, "");
-		*commandIndex = -1;	
-	} 	else{
-		*commandIndex = getCmdIndex(commandParsed[0]);
-	}
+	/*printf("Parsed elements:\n");
+	for(size_t i = 0; i < args->size; i++){
+		printf("%s\n", args->data[i]);
+	}*/
 }

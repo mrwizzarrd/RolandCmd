@@ -74,7 +74,6 @@ int createFile(const char *filename){
 **/
 int deleteFile(char *filename){
 	if(!fileFound(filename)){
-		ThrowError(FILE_NOT_FOUND, "");
 		return -1;
 	}
 	return remove(filename) == 0;

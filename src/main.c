@@ -56,7 +56,7 @@ int main(void){
 
 	while(1){
 		int commandIndex = -1;
-		char *args[19];
+		DynamicStringArray args = CreateDynamicArray(19, 20);
 		printf(">");
 		fgets(command, sizeof(command), stdin);
 		char fullCommand[50];
@@ -65,22 +65,23 @@ int main(void){
 
 		//printf("%s\n", command);
 
-		parseCommand(command, &commandIndex, args);
+		parseCommand(command, &commandIndex, &args);
 
 		//printf("command index: %d\n", commandIndex);
 
 		int argCount = 0;
-		while (args[argCount] != NULL){
+		while (args.data[argCount] != NULL){
     		argCount++;
 		}
 
 		if (commandIndex >= 0 && commandIndex < numOfCmds) {
-    		commands[commandIndex].func(args, argCount);
+    		commands[commandIndex].func(args.data, argCount);
     		addHistory(CmdHistory, fullCommand);
 		}
 
 		if(strcmp(command, "exit") == 0){
 			return 0;
 		}
+		FreeStringArray(&args);
 	}
 }

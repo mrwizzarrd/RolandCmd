@@ -59,6 +59,6 @@ int getCmdIndex(char *cmd);
  * 
  * 	**/
 
-void parseCommand(char *command, int *commandIndex, char **args);
+void parseCommand(char *command, int *commandIndex, DynamicStringArray *args);
 
 #endif

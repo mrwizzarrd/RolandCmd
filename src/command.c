@@ -68,7 +68,7 @@ void help(char **args, int size){
 				ThrowError(INVALID_ARGUMENT, "");
 		}
 
-	} else if(args[0] == NULL){
+	} else if(args[1] == NULL){
 
 		for(int i = 0; helpPages[i] != NULL; i++){
 			printf("%s\n", helpPages[i]);
@@ -95,6 +95,8 @@ void help(char **args, int size){
 void sum(char **args, int size){
 	int sum = 0;
 
+	printf("arg1: %s\n", args[0]);
+
 	for(int i = 0; i < size; i++){
 		sum += atoi(args[i]);
 	}
@@ -117,13 +119,9 @@ void sum(char **args, int size){
  * 	**/
 
 void subtract(char **args, int size){
-	int difference = atoi(args[0]);
-	int count = 1;
-	while(args[count] != NULL){
-		difference -= atoi(args[count]);
-		count++;
-	}
+	int count = countArgs(args);
 	if(count == 2){
+		int difference = atoi(args[0]) - atoi(args[1]);
 		printf("%d\n", difference);
 	} else{
 		ThrowError(INVALID_SYNTAX, "");
@@ -461,7 +459,7 @@ void enableDev(char **args, int size){
 //void (*commandFuncs[10])(char **, int) = {help, sum, subtract, square, cmdexit, clearConsole, cube, power, err, arrayTerminator};
 
 
-Command commands[13] = {
+Command commands[14] = {
 	{"help", help, 0},
 	{"add", sum, 0},
 	{"subtract", subtract, 0},

@@ -46,12 +46,42 @@ typedef struct {
  * 
  * @details allocates a lot of memory lol, I'll update these docs later probably
  * 
- * @param initialCapacity
- * @param initialStringCapacity
+ * @param initialCapacity: initial array capacity
+ * @param initialStringCapacity: initial string element capacity
  * 
-*/
+**/
+
+
 DynamicStringArray CreateDynamicArray(size_t initialCapacity, size_t initialStringCapacity);
 
+
+/**
+ * @brief adds element to string array
+ * 
+ * @details if the array is full it reallocates the array, doubling the memory usage, 
+ * if there's a sting larger than the max string allowed it also reallocates all elements to have that much memory 
+ * 
+ * @param arr:
+ * @param element:
+ * 
+ *  
+**/
+
+
+int AddString(DynamicStringArray *arr, char *element);
+
+
+/**
+ * @brief frees the array
+ * 
+ * @details frees every element and the array to the system's memory
+ * 
+ * @param arr: DynamicStringArray object to be freed
+ *  
+**/
+
+
+void FreeStringArray(DynamicStringArray *arr);
 
 
 /**
