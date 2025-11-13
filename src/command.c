@@ -396,7 +396,20 @@ void RemoveFile(char **args, int size){
 **/
 
 void WriteLine(char **args, int size){
-	
+	char *filename = args[0];
+	args++;
+	DynamicStringArray* tokenizedWords = CreateDynamicArray(10, 14);
+	size = countArgs(args) - 1;
+
+
+
+	for(size_t i = 0; i < size + 1; i++){
+		printf("%s\n", args[i]);
+		AddString(tokenizedWords, args[i]);
+	}
+
+	DynamicString* fileContent = CombineStrArray(tokenizedWords);
+	printf("Combining tokens Seccess!\nCombined content = %s\n", fileContent->data);
 }
 
 
@@ -459,7 +472,7 @@ void enableDev(char **args, int size){
 //void (*commandFuncs[10])(char **, int) = {help, sum, subtract, square, cmdexit, clearConsole, cube, power, err, arrayTerminator};
 
 
-Command commands[14] = {
+Command commands[15] = {
 	{"help", help, 0},
 	{"add", sum, 0},
 	{"subtract", subtract, 0},
@@ -472,6 +485,7 @@ Command commands[14] = {
 	{"fib", fibonacci, 0},
 	{"history", history, 0},
 	{"mkfile", MakeFile, 0},
+	{"appfile", WriteLine, 0},
 	{"devmode", enableDev, 0},
 	{"err", err, 1},
 };

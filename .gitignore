@@ -3,3 +3,8 @@
 *.exe
 *.o
 *.out
+
+#any test files
+*.roland
+*.cmd
+test*.*

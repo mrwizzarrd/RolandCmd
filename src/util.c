@@ -13,17 +13,17 @@
  * @param initialStringCapacity: initial string element capacity
  * 
 */
-DynamicStringArray CreateDynamicArray(size_t initialCapacity, size_t initialStringCapacity){
-	DynamicStringArray arr;
+DynamicStringArray *CreateDynamicArray(size_t initialCapacity, size_t initialStringCapacity){
+	DynamicStringArray *arr = malloc(sizeof(DynamicStringArray));
 
-	arr.size = 0;
-	arr.ArrayCapacity = initialCapacity;
-	arr.maxStringLength = initialStringCapacity;
+	arr->size = 0;
+	arr->ArrayCapacity = initialCapacity;
+	arr->maxStringLength = initialStringCapacity;
 
-	arr.data = malloc(initialCapacity * sizeof(char*));
+	arr->data = malloc(initialCapacity * sizeof(char*));
 
 	for(size_t i = 0; i < initialCapacity; i++){
-		arr.data[i] = calloc(initialStringCapacity, sizeof(char));
+		arr->data[i] = calloc(initialStringCapacity, sizeof(char));
 	}
 
 	return arr;
@@ -57,7 +57,7 @@ int AddString(DynamicStringArray* arr, char* element){
 		}
 	}
 
-	if(strlen(element) >= arr->maxStringLength){
+	while(strlen(element) >= arr->maxStringLength){
 		arr->maxStringLength *= 2;
 		for(size_t i = 0; i < arr->ArrayCapacity; i++){
 
@@ -69,7 +69,11 @@ int AddString(DynamicStringArray* arr, char* element){
 			}
 		}
 	}
-	arr->data[arr->size] = malloc(arr->maxStringLength);
+	if (arr->data[arr->size] == NULL) {
+		arr->data[arr->size] = malloc(arr->maxStringLength);
+		if (!arr->data[arr->size]) return -3;
+	}
+
     if(!arr->data[arr->size]){
 		return -3;
 	}
@@ -95,6 +99,115 @@ void FreeStringArray(DynamicStringArray* arr){
 		free(arr->data[i]);
 	}
 	free(arr->data);
+}
+
+/**
+ * @brief creates a dynamic string
+ * 
+ * @details allocates memory based on how many chars are assigned initially
+ * 
+ * @param initialCapacity: initial string capacity
+ * @param initialData: initial string
+ * 
+**/
+
+
+DynamicString *NewDynamicString(size_t initialCapacity, char *initialData){
+	int size = strlen(initialData);
+
+	if(size > initialCapacity){
+		fprintf(stderr, "Error: initial string is larger than intiaial capacity.\n");
+	}
+	DynamicString *dynString = malloc(sizeof(DynamicString));
+
+	dynString->size = size;
+	dynString->capacity = initialCapacity+1;
+	dynString->data = malloc((initialCapacity + 1) * sizeof(char));
+	strcpy(dynString->data, initialData);
+	dynString->data[size] = '\0';
+
+	return dynString;
+}
+
+
+/**
+ * @brief concatenates two dynamis strings
+ * 
+ * @param s1 Pointer to first dynamic string
+ * @param s2 pointer to second dynamic string
+ * 
+ * @return the concatenated dynamis string
+ * 
+ * @details uses strcat to concatenate the data of s1 and s2 to create a new DynamicString
+ * 
+**/
+
+DynamicString *concat(DynamicString *s1, DynamicString *s2){
+	size_t newSize = s1->size + s2->size;
+
+	if(newSize + 1 > s1->capacity){
+		size_t newCapacity = s1->capacity;
+		while(newSize + 1 > newCapacity){
+			newCapacity *= 2;
+		}
+		char* newData = realloc(s1->data, newCapacity);
+
+		if(!newData){
+			fprintf(stderr, "Memory allocation failed in concat.\n");
+		}
+		s1->data = newData;
+		s1->capacity = newCapacity;
+	}
+
+	strcat(s1->data, s2->data);
+	s1->size = newSize;
+
+	return s1;
+	//dataCat[finalIndex] = '\0';
+}
+
+/**
+ * @brief
+ * @details Frees Dynamic String to System Memory
+ * 
+ * @param string the dynamic String to be freed
+ **/
+
+void FreeDynamicString(DynamicString *string){
+	free(string->data);
+	free(string);
+}
+
+
+/**
+ * @brief combines a tokenized string, eact token is seperated with a space
+ * 
+ * @param arr A dynamic string array
+ * 
+ * @details Creates the initial dynamic string and then interates through the input array,
+ *  at the beginning of each array it concatenates a space and then concatenates the data, 
+ *  then finally frees the temp DynamicString variable 
+ * 
+ * @return combined: The combined Dynamic String
+ * 
+**/
+
+DynamicString *CombineStrArray(DynamicStringArray *arr){
+	size_t arrSize = arr->size;
+
+	DynamicString *space = NewDynamicString(2, " "); 
+
+	DynamicString *combined = NewDynamicString(32, arr->data[0]);
+	for(size_t i = 1; i < arrSize; i++){
+		concat(combined, space);
+		DynamicString* next = NewDynamicString(strlen(arr->data[i]), arr->data[i]);
+		concat(combined, next);
+		FreeDynamicString(next);
+	}
+
+	FreeDynamicString(space);
+
+	return combined;
 }
 
 

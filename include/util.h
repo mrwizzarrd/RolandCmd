@@ -40,6 +40,22 @@ typedef struct {
 	char **data;
 } DynamicStringArray;
 
+/** 
+ * @typedef
+ * @struct DynamicString that has 3 properties:
+ * size_t size: the current number of elements in the array
+ * size_t capacity: how many chars are allocated to the string
+ * char *data: the actual data of the array
+ *  
+**/
+
+typedef struct {
+	size_t size;
+	size_t capacity;
+	char *data;
+} DynamicString;
+
+
 
 /**
  * @brief creates a dynamic string array
@@ -52,7 +68,47 @@ typedef struct {
 **/
 
 
-DynamicStringArray CreateDynamicArray(size_t initialCapacity, size_t initialStringCapacity);
+DynamicStringArray *CreateDynamicArray(size_t initialCapacity, size_t initialStringCapacity);
+
+
+/**
+ * @brief creates a dynamic string
+ * 
+ * @details allocates memory based on how many chars are assigned initially
+ * 
+ * @param initialCapacity: initial string capacity
+ * @param initialData: initial string
+ * 
+**/
+
+
+DynamicString *NewDynamicString(size_t initialCapacity, char *initialData);
+
+
+/**
+ * @brief concatenates two dynamis strings
+ * 
+ * @param s1 Pointer to first dynamic string
+ * @param s2 pointer to second dynamic string
+ * 
+ * @return the concatenated dynamis string
+ * 
+ * @details uses strcat to concatenate the data of s1 and s2 to create a new DynamicString
+ * 
+**/
+
+
+DynamicString *concat(DynamicString *s1, DynamicString *s2);
+
+
+/**
+ * @brief
+ * @details Frees Dynamic String to System Memory
+ * 
+ * @param string the dynamic String to be freed
+ **/
+
+void FreeDynamicString(DynamicString *string);
 
 
 /**
@@ -66,6 +122,21 @@ DynamicStringArray CreateDynamicArray(size_t initialCapacity, size_t initialStri
  * 
  *  
 **/
+
+/**
+ * @brief combines a tokenized string, eact token is seperated with a space
+ * 
+ * @param arr A dynamic string array
+ * 
+ * @details Creates the initial dynamic string and then interates through the input array,
+ *  at the beginning of each array it concatenates a space and then concatenates the data, 
+ *  then finally frees the temp DynamicString variable 
+ * 
+ * @return combined: The combined Dynamic String
+ * 
+**/
+
+DynamicString *CombineStrArray(DynamicStringArray *arr);
 
 
 int AddString(DynamicStringArray *arr, char *element);

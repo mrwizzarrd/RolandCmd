@@ -90,6 +90,7 @@ void parseCommand(char *command, int *commandIndex, DynamicStringArray *args){
 	}	
 	char *token = strtok(NULL, " ");
 	while(token != NULL){
+		printf("arg: %s\n", token);
 		AddString(args, token);
 		token = strtok(NULL, " ");
 	}

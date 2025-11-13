@@ -50,38 +50,38 @@ exit- Exits command line
 
 int main(void){
 	InitHistory();
-	char command[50];
+	char command[1024];
 
 	command[0] = '\0';
 
 	while(1){
 		int commandIndex = -1;
-		DynamicStringArray args = CreateDynamicArray(19, 20);
+		DynamicStringArray *args = CreateDynamicArray(19, 20);
 		printf(">");
 		fgets(command, sizeof(command), stdin);
-		char fullCommand[50];
+		char fullCommand[1024];
 		strcpy(fullCommand, command);
 		command[strcspn(command, "\n")] = '\0';
 
 		//printf("%s\n", command);
 
-		parseCommand(command, &commandIndex, &args);
+		parseCommand(command, &commandIndex, args);
 
 		//printf("command index: %d\n", commandIndex);
 
 		int argCount = 0;
-		while (args.data[argCount] != NULL){
+		while (args->data[argCount] != NULL){
     		argCount++;
 		}
 
 		if (commandIndex >= 0 && commandIndex < numOfCmds) {
-    		commands[commandIndex].func(args.data, argCount);
+    		commands[commandIndex].func(args->data, argCount);
     		addHistory(CmdHistory, fullCommand);
 		}
 
 		if(strcmp(command, "exit") == 0){
 			return 0;
 		}
-		FreeStringArray(&args);
+		FreeStringArray(args);
 	}
 }
