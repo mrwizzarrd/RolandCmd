@@ -408,8 +408,25 @@ void WriteLine(char **args, int size){
 		AddString(tokenizedWords, args[i]);
 	}
 
+	//printf("made it here\n");
+
 	DynamicString* fileContent = CombineStrArray(tokenizedWords);
-	printf("Combining tokens Seccess!\nCombined content = %s\n", fileContent->data);
+
+	int success = writeToFile(filename, fileContent->data, true);
+
+	switch (success){
+	case -1:
+		ThrowError(FILE_NOT_FOUND, "");
+		break;
+	case -2:
+		ThrowError(FILE_ERROR, "");
+		break;
+	
+	default:
+		printf("Write to file successfully\n");
+		break;
+	}
+	//printf("Combining tokens Seccess!\nCombined content = %s\n", fileContent->data);
 }
 
 
@@ -472,7 +489,7 @@ void enableDev(char **args, int size){
 //void (*commandFuncs[10])(char **, int) = {help, sum, subtract, square, cmdexit, clearConsole, cube, power, err, arrayTerminator};
 
 
-Command commands[15] = {
+Command commands[16] = {
 	{"help", help, 0},
 	{"add", sum, 0},
 	{"subtract", subtract, 0},
@@ -485,6 +502,7 @@ Command commands[15] = {
 	{"fib", fibonacci, 0},
 	{"history", history, 0},
 	{"mkfile", MakeFile, 0},
+	{"rmfile", RemoveFile, 0},
 	{"appfile", WriteLine, 0},
 	{"devmode", enableDev, 0},
 	{"err", err, 1},
