@@ -314,7 +314,7 @@ void power(char **args, int size){
 **/
 
 void history(char **args, int size){
-	if(countArgs(args) != 0){
+	if(countArgs(args) != 1){
 		ThrowError(INVALID_SYNTAX, "");
 	} else{
 		for (size_t i = 0; i < CmdHistory->usage; i++){
@@ -343,10 +343,13 @@ void MakeFile(char **args, int size){
 		switch(success){
 		case -1:
 			ThrowError(FILE_ERROR, "");
+			break;
 		case -2:
 			ThrowError(FILE_EXISTS, "");
+			break;
 		default:
-			printf("File %s created successfully\n", filename);
+			//printf("File %s created successfully\n", filename);
+			break;
 		}
 	}
 
@@ -377,16 +380,17 @@ void RemoveFile(char **args, int size){
 		break;
 	case 0:
 		ThrowError(FILE_ERROR, "");
+		break;
 	
 	default:
-		printf("File %s deleted successfuly\n");
+		//printf("File %s deleted successfuly\n", args[0]);
 		break;
 	}
 
 }
 
 /**
- * @brief "appline" command
+ * @brief "writeline" command
  * 
  * @details appends content to a new line of a file
  * 
@@ -395,7 +399,7 @@ void RemoveFile(char **args, int size){
  * 
 **/
 
-void WriteLine(char **args, int size){
+void WriteNewLine(char **args, int size){
 	char *filename = args[0];
 	args++;
 	DynamicStringArray* tokenizedWords = CreateDynamicArray(10, 14);
@@ -404,7 +408,7 @@ void WriteLine(char **args, int size){
 
 
 	for(size_t i = 0; i < size + 1; i++){
-		printf("%s\n", args[i]);
+		//printf("%s\n", args[i]);
 		AddString(tokenizedWords, args[i]);
 	}
 
@@ -427,6 +431,81 @@ void WriteLine(char **args, int size){
 		break;
 	}
 	//printf("Combining tokens Seccess!\nCombined content = %s\n", fileContent->data);
+}
+
+
+/**
+ * @brief "write" command
+ * 
+ * @param appends content to current line of file
+ * @param size an integer which is the size of the array
+**/
+
+
+void WriteToLine(char **args, int size){
+		char *filename = args[0];
+	args++;
+	DynamicStringArray* tokenizedWords = CreateDynamicArray(10, 14);
+	size = countArgs(args) - 1;
+
+
+
+	for(size_t i = 0; i < size + 1; i++){
+		//printf("%s\n", args[i]);
+		AddString(tokenizedWords, args[i]);
+	}
+
+	//printf("made it here\n");
+
+	DynamicString* fileContent = CombineStrArray(tokenizedWords);
+
+	int success = writeToFile(filename, fileContent->data, false);
+
+	switch (success){
+	case -1:
+		ThrowError(FILE_NOT_FOUND, "");
+		break;
+	case -2:
+		ThrowError(FILE_ERROR, "");
+		break;
+	
+	default:
+		printf("Write to file successfully\n");
+		break;
+	}
+	//printf("Combining tokens Seccess!\nCombined content = %s\n", fileContent->data);
+}
+
+/**
+ * @brief "read" command
+ * 
+ * @param reads file content and prints it to terminal
+ * 
+ * @param args a pointer to an array of strings that are parsed command arguments
+ * @param size an integer which is the size of the array
+**/
+
+void ReadContent(char **args, int size){
+	if(countArgs(args) != 1){
+		ThrowError(INVALID_ARGUMENT, "");
+		return;
+	}
+
+	char* filename = args[0];
+
+	DynamicString *readStatus = readFile(filename);
+
+	if(strcmp(readStatus->data, "ERROR: -1") == 0){
+		ThrowError(FILE_NOT_FOUND, "");
+		return;
+	}
+	if(strcmp(readStatus->data, "ERROR: -2") == 0){
+		ThrowError(FILE_ERROR, "");
+		return;
+	}
+	printf("%s\n", readStatus->data);
+
+	FreeDynamicString(readStatus);
 }
 
 
@@ -489,7 +568,7 @@ void enableDev(char **args, int size){
 //void (*commandFuncs[10])(char **, int) = {help, sum, subtract, square, cmdexit, clearConsole, cube, power, err, arrayTerminator};
 
 
-Command commands[16] = {
+Command commands[18] = {
 	{"help", help, 0},
 	{"add", sum, 0},
 	{"subtract", subtract, 0},
@@ -503,7 +582,9 @@ Command commands[16] = {
 	{"history", history, 0},
 	{"mkfile", MakeFile, 0},
 	{"rmfile", RemoveFile, 0},
-	{"appfile", WriteLine, 0},
+	{"writeline", WriteNewLine, 0},
+	{"write", WriteToLine, 0},
+	{"read", ReadContent, 0},
 	{"devmode", enableDev, 0},
 	{"err", err, 1},
 };

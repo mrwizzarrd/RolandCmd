@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include "util.h"
 
 
 /**
@@ -35,9 +36,9 @@ int createFile(const char *filename);
 int deleteFile(char *filename);
 
 /**
- * @brief creates new file 
+ * @brief writes content to file
  * 
- * @details checks if file exists, if it does throws FILE_EXISTS error, otherwise it creates file
+ * @details checks if file exists, if it does throws FILE_EXISTS error, otherwise it writes to file
  * 
  * @param filename Name of file to write to
  * @param content content to write to file
@@ -48,5 +49,21 @@ int deleteFile(char *filename);
 **/
 
 int writeToFile(char *filename, char *content, bool newline);
+
+
+/**
+ * @brief reads content from file
+ *
+ * 
+ * @details checks if file exists, if it does throws FILE_EXISTS error, otherwise it reads file
+ * 
+ * @param filename Name of file to read from
+ * 
+ * @return a dynamic string holding error content or file info 
+ * 
+ * 
+**/
+
+DynamicString *readFile(char *filename);
 
 #endif

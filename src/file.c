@@ -110,3 +110,51 @@ int writeToFile(char *filename, char *content, bool newline){
 	fclose(file);
 	return 0;
 }
+
+
+/**
+ * @brief reads content from file
+ *
+ * 
+ * @details checks if file exists, if it does throws FILE_EXISTS error, otherwise it reads file
+ * 
+ * @param filename Name of file to read from
+ * 
+ * @return int 0 = success, -1 = file not found, -2 = error opening file
+ * 
+ * 
+**/
+
+DynamicString *readFile(char *filename){
+
+		bool Found = fileFound(filename);
+
+		if(!Found){
+			return NewDynamicString(25, "ERROR: -1");
+		}
+		FILE* file = fopen(filename, "r");
+
+		if(!file){
+			return NewDynamicString(25, "ERROR: -2");
+		}
+
+		//gets file size
+		fseek(file, 0, SEEK_END);
+		long fileSize = ftell(file);
+		rewind(file);
+
+		char *buffer = malloc(fileSize + 1);
+		if(!buffer){
+			return NewDynamicString(25, "ERROR: -2");
+		}
+
+		size_t bytesRead = fread(buffer, 1, fileSize, file);
+		buffer[bytesRead] = '\0';
+
+		fclose(file);
+		DynamicString *returnContent = NewDynamicString(strlen(buffer)+5, buffer);
+
+		free(buffer);
+		return returnContent;
+}
+

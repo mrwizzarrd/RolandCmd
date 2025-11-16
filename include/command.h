@@ -89,6 +89,7 @@ void square(char **args, int size);
  * 
  * 	**/
 
+
 void cube(char **args, int size);
 
 /**
@@ -116,6 +117,7 @@ void cmdexit(char **args, int size);
 
 void clearConsole(char **args, int size);
 
+
 /**
  * 
  * @brief "pow" Command
@@ -128,6 +130,7 @@ void clearConsole(char **args, int size);
 
 void power(char **args, int size);
 
+
 /**
  * @brief "history" command
  * 
@@ -139,6 +142,7 @@ void power(char **args, int size);
 
 void history(char **args, int size);
 
+
 /**
  * 
  * @brief "factorial" Command
@@ -148,7 +152,9 @@ void history(char **args, int size);
  * @param a pointer to an array of strings that are command arguments, and an integer which is the size of the array
  * 
  * 	**/
+
 void factorial(char **args, int size);
+
 
 /**
  * 
@@ -161,6 +167,70 @@ void factorial(char **args, int size);
  * 	**/
 
 void fibonacci(char **args, int size);
+
+
+/**
+ * @brief "mkfile" command
+ * 
+ * @details makes a new file
+ * 
+ * @param args a pointer to an array of strings that are parsed command arguments
+ * @param size an integer which is the size of the array
+ * 
+**/
+
+void MakeFile(char **args, int size);
+
+
+/**
+ * @brief "rmfile" command
+ * 
+ * @details removes a file
+ * 
+ * @param args a pointer to an array of strings that are parsed command arguments
+ * @param size an integer which is the size of the array
+ * 
+**/
+
+void RemoveFile(char **args, int size);
+
+
+/**
+ * @brief "writeline" command
+ * 
+ * @details appends content to a new line of a file
+ * 
+ * @param args a pointer to an array of strings that are parsed command arguments
+ * @param size an integer which is the size of the array
+ * 
+**/
+
+void WriteNewLine(char **args, int size);
+
+
+/**
+ * @brief "write" command
+ * 
+ * @param appends content to current line of file
+ * 
+ * @param args a pointer to an array of strings that are parsed command arguments
+ * @param size an integer which is the size of the array
+**/
+
+void WriteToLine(char **args, int size);
+
+
+/**
+ * @brief "read" command
+ * 
+ * @param reads file content and prints it to terminal
+ * 
+ * @param args a pointer to an array of strings that are parsed command arguments
+ * @param size an integer which is the size of the array
+**/
+
+void ReadContent(char **args, int size);
+
 
 /**
  * 
